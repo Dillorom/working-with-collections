@@ -1,0 +1,106 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GenChallengeSolution
+{
+    public class ClassicCar
+    {
+        public string m_Make;
+        public string m_Model;
+        public int m_Year;
+        public int m_Value;
+
+        public ClassicCar(string make, string model, int year, int val) {
+            m_Make = make;
+            m_Model = model;
+            m_Year = year;
+            m_Value = val;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args) {
+            List<ClassicCar> carList = new List<ClassicCar>();
+            populateData(carList);
+
+            // How many cars are in the collection?
+            Console.WriteLine($"There are {carList.Count} cars in the list.");
+
+
+            // How many Fords are there?
+            List<ClassicCar> fordList = carList.FindAll(FindFords);
+            Console.WriteLine($"There are {fordList.Count} Fords in the list");
+
+
+            // What is the most valuable car?
+            ClassicCar mostValCar = null;
+            int highValue = 0;
+            foreach(ClassicCar c in carList)
+            {
+                if(c.m_Value > highValue)
+                {
+                    mostValCar = c;
+                    highValue = c.m_Value;
+                }
+            }
+           Console.WriteLine($"The most expensive car is {mostValCar.m_Make}, {mostValCar.m_Model}, { mostValCar.m_Year} and it costs { mostValCar.m_Value}.");
+
+            // What is the entire collection worth?
+            int totalVal = 0;
+            foreach(ClassicCar c in carList)
+            {
+                totalVal += c.m_Value;
+            }
+            Console.WriteLine($"Total value is {totalVal}");
+
+
+            // How many unique manufacturers are there?
+            Dictionary<string, bool> makes = new Dictionary<string, bool>();
+            foreach(ClassicCar c in carList)
+            {
+                try
+                {
+                    makes.Add(c.m_Make, true);
+                }
+                catch (Exception e) { }
+            }
+            Console.WriteLine($"There are {makes.Keys.Count} unique manufacturers.");
+
+            Console.WriteLine("\nHit Enter key to continue...");
+            Console.ReadLine();
+        }
+
+        static void populateData(List<ClassicCar> theList) {
+            theList.Add(new ClassicCar("Alfa Romeo", "Spider Veloce", 1965, 15000));
+            theList.Add(new ClassicCar("Alfa Romeo", "1750 Berlina", 1970, 20000));
+            theList.Add(new ClassicCar("Alfa Romeo", "Giuletta", 1978, 45000));
+
+            theList.Add(new ClassicCar("Ford", "Thunderbird", 1971, 35000));
+            theList.Add(new ClassicCar("Ford", "Mustang", 1976, 29800));
+            theList.Add(new ClassicCar("Ford", "Corsair", 1970, 17900));
+            theList.Add(new ClassicCar("Ford", "LTD", 1969, 12000));
+
+            theList.Add(new ClassicCar("Chevrolet", "Camaro", 1979, 7000));
+            theList.Add(new ClassicCar("Chevrolet", "Corvette Stringray", 1966, 21000));
+            theList.Add(new ClassicCar("Chevrolet", "Monte Carlo", 1984, 10000));
+
+            theList.Add(new ClassicCar("Mercedes", "300SL Roadster", 1957, 19800));
+            theList.Add(new ClassicCar("Mercedes", "SSKL", 1930, 14300));
+            theList.Add(new ClassicCar("Mercedes", "130H", 1936, 18400));
+            theList.Add(new ClassicCar("Mercedes", "250SL", 1968, 13200));
+        }
+
+        static bool FindFords(ClassicCar car)
+        {
+            if(car.m_Make == "Ford")
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+}
